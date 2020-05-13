@@ -18,7 +18,8 @@ const app: Koa = new Koa()
 // Loading certificates
 const options: http2.SecureServerOptions = {
     cert: fs.readFileSync(`${process.cwd()}/src/resources/cert/localhost.crt`),
-    key: fs.readFileSync(`${process.cwd()}/src/resources/cert/localhost.key`)
+    key: fs.readFileSync(`${process.cwd()}/src/resources/cert/localhost.key`),
+    allowHTTP1: true
 }
 
 const _use: Function = app.use
@@ -30,6 +31,7 @@ app.use(bodyParser())
 app.use(errorMiddleware.errorMiddleware())
 app.use(passport.initialize())
 app.use(passport.session())
+require('../resources/config/passport')
 
 routes(app)
 

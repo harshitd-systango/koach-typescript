@@ -1,8 +1,4 @@
-import {
-    Sequelize,
-    DataTypes,
-    IntegerDataType
-} from 'sequelize';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface BookAttributes {
     name?: string;
@@ -12,7 +8,7 @@ export interface BookAttributes {
     total_page?: number;
 }
 
-export interface BookInstance {
+export interface BookInstance extends Document{
     id: number;
     createdAt: Date;
     updatedAt: Date;
@@ -25,29 +21,14 @@ export interface BookInstance {
 
 }
 
-export default (sequelize: Sequelize, DataTypes) => {
-    var Book = sequelize.define('Book', {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        author_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        category: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        price: {
-            type: DataTypes.FLOAT,
-            allowNull: false
-        },
-        total_page: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
-    })
 
-    return Book
-};
+const BookSchema: Schema = new Schema({
+    name: { type: String, required: true, unique: true },
+    category: { type: String, required: true},
+    price: { type: Number, required: true },
+    // total_page: { type: Number, required: true},
+    author_name: { type: String }
+});
+  
+  // Export the model and return your IUser interface
+  export default mongoose.model<BookInstance>('Book', BookSchema);
